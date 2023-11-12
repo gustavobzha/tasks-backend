@@ -2,6 +2,9 @@ package br.ce.wcaquino.taskbackend.controller;
 
 import java.util.List;
 
+import br.ce.wcaquino.taskbackend.dto.TaskDTO;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +32,8 @@ public class TaskController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Task> save(@RequestBody Task todo) throws ValidationException {
-		if(todo.getTask() == null || todo.getTask() == "") {
+	public ResponseEntity<Task> save(@RequestBody TaskDTO todo) throws ValidationException {
+		if(StringUtils.isEmpty(todo.getDescription()) || todo.getDescription().isBlank()) {
 			throw new ValidationException("Fill the task description");
 		}
 		if(todo.getDueDate() == null) {
@@ -39,7 +42,9 @@ public class TaskController {
 		if(!DateUtils.isEqualOrFutureDate(todo.getDueDate())) {
 			throw new ValidationException("Due date must not be in past");
 		}
-		Task saved = todoRepo.save(todo);
-		return new ResponseEntity<Task>(saved, HttpStatus.CREATED);
+
+		ModelMapper modelMapper = new ModelMapper();
+		Task saved = todoRepo.save(modelMapper.map(todo, Task.class));
+		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 }

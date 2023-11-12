@@ -4,22 +4,22 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-public class DateUtilsTest {
+class DateUtilsTest {
 
     @Test
-    public void deveRetornarTrueParaDatasFuturas() {
+    void deveRetornarTrueParaDatasFuturas() {
         LocalDate date = LocalDate.of(2050, 1, 1);
         Assertions.assertTrue(DateUtils.isEqualOrFutureDate(date));
     }
 
     @Test
-    public void deveRetornarFalseParaDatasPassadas() {
+    void deveRetornarFalseParaDatasPassadas() {
         LocalDate date = LocalDate.of(2010, 1, 1);
         Assertions.assertFalse(DateUtils.isEqualOrFutureDate(date));
     }
 
     @Test
-    public void deveRetornarTrueParaDataAtual() {
+    void deveRetornarTrueParaDataAtual() {
         LocalDate date = LocalDate.now();
         Assertions.assertTrue(DateUtils.isEqualOrFutureDate(date));
     }
